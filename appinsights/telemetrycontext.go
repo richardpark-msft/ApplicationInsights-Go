@@ -2,8 +2,9 @@ package appinsights
 
 import (
 	"strings"
+	"time"
 
-	"github.com/microsoft/ApplicationInsights-Go/appinsights/contracts"
+	"github.com/richardpark-msft/ApplicationInsights-Go/appinsights/contracts"
 )
 
 // Encapsulates contextual data common to all telemetry submitted through a
@@ -65,7 +66,7 @@ func (context *TelemetryContext) envelop(item Telemetry) *contracts.Envelope {
 
 	timestamp := item.Time()
 	if timestamp.IsZero() {
-		timestamp = currentClock.Now()
+		timestamp = time.Now()
 	}
 
 	envelope.Time = timestamp.UTC().Format("2006-01-02T15:04:05.999999Z")

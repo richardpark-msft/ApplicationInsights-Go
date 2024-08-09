@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/microsoft/ApplicationInsights-Go/appinsights/contracts"
+	"github.com/richardpark-msft/ApplicationInsights-Go/appinsights/contracts"
 )
 
 // Common interface implemented by telemetry data contracts
@@ -116,7 +116,7 @@ func NewTraceTelemetry(message string, severityLevel contracts.SeverityLevel) *T
 		Message:       message,
 		SeverityLevel: severityLevel,
 		BaseTelemetry: BaseTelemetry{
-			Timestamp:  currentClock.Now(),
+			Timestamp:  time.Now(),
 			Tags:       make(contracts.ContextTags),
 			Properties: make(map[string]string),
 		},
@@ -146,7 +146,7 @@ func NewEventTelemetry(name string) *EventTelemetry {
 	return &EventTelemetry{
 		Name: name,
 		BaseTelemetry: BaseTelemetry{
-			Timestamp:  currentClock.Now(),
+			Timestamp:  time.Now(),
 			Tags:       make(contracts.ContextTags),
 			Properties: make(map[string]string),
 		},
@@ -183,7 +183,7 @@ func NewMetricTelemetry(name string, value float64) *MetricTelemetry {
 		Name:  name,
 		Value: value,
 		BaseTelemetry: BaseTelemetry{
-			Timestamp:  currentClock.Now(),
+			Timestamp:  time.Now(),
 			Tags:       make(contracts.ContextTags),
 			Properties: make(map[string]string),
 		},
@@ -242,7 +242,7 @@ func NewAggregateMetricTelemetry(name string) *AggregateMetricTelemetry {
 		Name:  name,
 		Count: 0,
 		BaseTelemetry: BaseTelemetry{
-			Timestamp:  currentClock.Now(),
+			Timestamp:  time.Now(),
 			Tags:       make(contracts.ContextTags),
 			Properties: make(map[string]string),
 		},
@@ -412,7 +412,7 @@ func NewRequestTelemetry(method, uri string, duration time.Duration, responseCod
 		ResponseCode: responseCode,
 		Success:      success,
 		BaseTelemetry: BaseTelemetry{
-			Timestamp:  currentClock.Now().Add(-duration),
+			Timestamp:  time.Now().Add(-duration),
 			Tags:       make(contracts.ContextTags),
 			Properties: make(map[string]string),
 		},
@@ -494,7 +494,7 @@ func NewRemoteDependencyTelemetry(name, dependencyType, target string, success b
 		Target:  target,
 		Success: success,
 		BaseTelemetry: BaseTelemetry{
-			Timestamp:  currentClock.Now(),
+			Timestamp:  time.Now(),
 			Tags:       make(contracts.ContextTags),
 			Properties: make(map[string]string),
 		},
@@ -561,7 +561,7 @@ func NewAvailabilityTelemetry(name string, duration time.Duration, success bool)
 		Duration: duration,
 		Success:  success,
 		BaseTelemetry: BaseTelemetry{
-			Timestamp:  currentClock.Now(),
+			Timestamp:  time.Now(),
 			Tags:       make(contracts.ContextTags),
 			Properties: make(map[string]string),
 		},
@@ -614,7 +614,7 @@ func NewPageViewTelemetry(name, url string) *PageViewTelemetry {
 		Name: name,
 		Url:  url,
 		BaseTelemetry: BaseTelemetry{
-			Timestamp:  currentClock.Now(),
+			Timestamp:  time.Now(),
 			Tags:       make(contracts.ContextTags),
 			Properties: make(map[string]string),
 		},

@@ -4,8 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"code.cloudfoundry.org/clock"
-	"github.com/microsoft/ApplicationInsights-Go/appinsights/contracts"
+	"github.com/richardpark-msft/ApplicationInsights-Go/appinsights/contracts"
 )
 
 var (
@@ -157,12 +156,13 @@ type inMemoryChannelState struct {
 	retry        bool
 	retryTimeout time.Duration
 	callback     chan struct{}
-	timer        clock.Timer
+	timer        *time.Timer
 }
 
 func newInMemoryChannelState(channel *InMemoryChannel) *inMemoryChannelState {
 	// Initialize timer to stopped -- avoid any chance of a race condition.
-	timer := currentClock.NewTimer(time.Hour)
+	//timer := currentClock.NewTimer(time.Hour)
+	timer := time.NewTimer(time.Hour)
 	timer.Stop()
 
 	return &inMemoryChannelState{
@@ -223,7 +223,7 @@ func (state *inMemoryChannelState) waitToSend() bool {
 	for {
 		if len(state.buffer) >= state.channel.batchSize {
 			if !state.timer.Stop() {
-				<-state.timer.C()
+				<-state.timer.C
 			}
 
 			return state.send()
@@ -251,7 +251,7 @@ func (state *inMemoryChannelState) waitToSend() bool {
 
 			if ctl.flush {
 				if !state.timer.Stop() {
-					<-state.timer.C()
+					<-state.timer.C
 				}
 
 				state.retryTimeout = ctl.timeout
@@ -259,7 +259,7 @@ func (state *inMemoryChannelState) waitToSend() bool {
 				return state.send()
 			}
 
-		case <-state.timer.C():
+		case <-state.timer.C:
 			// Timeout expired
 			return state.send()
 		}
@@ -407,7 +407,7 @@ func (channel *InMemoryChannel) transmitRetry(items telemetryBufferItems, retry 
 			if retryTimeRemaining < wait {
 				// One more chance left -- we'll wait the max time we can
 				// and then retry on the way out.
-				currentClock.Sleep(retryTimeRemaining)
+				time.Sleep(retryTimeRemaining)
 				break
 			} else {
 				// Still have time left to go through the rest of the regular
@@ -417,7 +417,7 @@ func (channel *InMemoryChannel) transmitRetry(items telemetryBufferItems, retry 
 		}
 
 		diagnosticsWriter.Printf("Waiting %s to retry submission", wait)
-		currentClock.Sleep(wait)
+		time.Sleep(wait)
 
 		// Wait if the channel is throttled and we're not on a schedule
 		if channel.IsThrottled() && retryTimeout == 0 {
