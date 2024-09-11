@@ -1,4 +1,4 @@
-module github.com/microsoft/ApplicationInsights-Go
+module github.com/richardpark-msft/ApplicationInsights-Go
 
 go 1.18.0
 
