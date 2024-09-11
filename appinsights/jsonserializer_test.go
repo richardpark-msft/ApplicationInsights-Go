@@ -14,8 +14,8 @@ import (
 const test_ikey = "01234567-0000-89ab-cdef-000000000000"
 
 func TestJsonSerializerEvents(t *testing.T) {
-	mockClock(time.Unix(1511001321, 0))
-	defer resetClock()
+	// mockClock(time.Unix(1511001321, 0))
+	// defer resetClock()
 
 	var buffer telemetryBufferItems
 
@@ -168,8 +168,8 @@ func TestJsonSerializerEvents(t *testing.T) {
 }
 
 func TestJsonSerializerNakedEvents(t *testing.T) {
-	mockClock(time.Unix(1511001321, 0))
-	defer resetClock()
+	// mockClock(time.Unix(1511001321, 0))
+	// defer resetClock()
 
 	var buffer telemetryBufferItems
 

@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/microsoft/ApplicationInsights-Go/appinsights/contracts"
 )
@@ -39,7 +40,7 @@ func newExceptionTelemetry(err interface{}, skip int) *ExceptionTelemetry {
 		Frames:        GetCallstack(2 + skip),
 		SeverityLevel: Error,
 		BaseTelemetry: BaseTelemetry{
-			Timestamp:  currentClock.Now(),
+			Timestamp:  time.Now(),
 			Tags:       make(contracts.ContextTags),
 			Properties: make(map[string]string),
 		},

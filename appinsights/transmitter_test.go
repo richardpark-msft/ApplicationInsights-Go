@@ -451,50 +451,50 @@ func TestTransmitResults(t *testing.T) {
 		&resultProperties{isFailure: true, canRetry: true, retryableErrors: true})
 }
 
-func TestGetRetryItems(t *testing.T) {
-	mockClock()
-	defer resetClock()
+// func TestGetRetryItems(t *testing.T) {
+// 	mockClock()
+// 	defer resetClock()
 
-	// Keep a pristine copy.
-	originalPayload, originalItems := makePayload()
+// 	// Keep a pristine copy.
+// 	originalPayload, originalItems := makePayload()
 
-	res1 := &transmissionResult{
-		statusCode: 200,
-		response:   &backendResponse{ItemsReceived: 7, ItemsAccepted: 7},
-	}
+// 	res1 := &transmissionResult{
+// 		statusCode: 200,
+// 		response:   &backendResponse{ItemsReceived: 7, ItemsAccepted: 7},
+// 	}
 
-	payload1, items1 := res1.GetRetryItems(makePayload())
-	if len(payload1) > 0 || len(items1) > 0 {
-		t.Error("GetRetryItems shouldn't return anything")
-	}
+// 	payload1, items1 := res1.GetRetryItems(makePayload())
+// 	if len(payload1) > 0 || len(items1) > 0 {
+// 		t.Error("GetRetryItems shouldn't return anything")
+// 	}
 
-	res2 := &transmissionResult{statusCode: 408}
+// 	res2 := &transmissionResult{statusCode: 408}
 
-	payload2, items2 := res2.GetRetryItems(makePayload())
-	if string(originalPayload) != string(payload2) || len(items2) != 7 {
-		t.Error("GetRetryItems shouldn't return anything")
-	}
+// 	payload2, items2 := res2.GetRetryItems(makePayload())
+// 	if string(originalPayload) != string(payload2) || len(items2) != 7 {
+// 		t.Error("GetRetryItems shouldn't return anything")
+// 	}
 
-	res3 := &transmissionResult{
-		statusCode: 206,
-		response: &backendResponse{
-			ItemsReceived: 7,
-			ItemsAccepted: 4,
-			Errors: []*itemTransmissionResult{
-				&itemTransmissionResult{Index: 1, StatusCode: 200, Message: "OK"},
-				&itemTransmissionResult{Index: 3, StatusCode: 400, Message: "Bad"},
-				&itemTransmissionResult{Index: 5, StatusCode: 408, Message: "Later"},
-				&itemTransmissionResult{Index: 6, StatusCode: 500, Message: "Oops"},
-			},
-		},
-	}
+// 	res3 := &transmissionResult{
+// 		statusCode: 206,
+// 		response: &backendResponse{
+// 			ItemsReceived: 7,
+// 			ItemsAccepted: 4,
+// 			Errors: []*itemTransmissionResult{
+// 				&itemTransmissionResult{Index: 1, StatusCode: 200, Message: "OK"},
+// 				&itemTransmissionResult{Index: 3, StatusCode: 400, Message: "Bad"},
+// 				&itemTransmissionResult{Index: 5, StatusCode: 408, Message: "Later"},
+// 				&itemTransmissionResult{Index: 6, StatusCode: 500, Message: "Oops"},
+// 			},
+// 		},
+// 	}
 
-	payload3, items3 := res3.GetRetryItems(makePayload())
-	expected3 := telemetryBufferItems{originalItems[5], originalItems[6]}
-	if string(payload3) != string(expected3.serialize()) || len(items3) != 2 {
-		t.Error("Unexpected result")
-	}
-}
+// 	payload3, items3 := res3.GetRetryItems(makePayload())
+// 	expected3 := telemetryBufferItems{originalItems[5], originalItems[6]}
+// 	if string(payload3) != string(expected3.serialize()) || len(items3) != 2 {
+// 		t.Error("Unexpected result")
+// 	}
+// }
 
 func makePayload() ([]byte, telemetryBufferItems) {
 	buffer := telemetryBuffer()

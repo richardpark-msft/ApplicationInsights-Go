@@ -97,7 +97,7 @@ func (throttle *throttleManager) waitForThrottle() (time.Time, bool) {
 }
 
 func (throttle *throttleManager) waitForReady(throttledUntil time.Time) bool {
-	duration := throttledUntil.Sub(currentClock.Now())
+	duration := throttledUntil.Sub(time.Now())
 	if duration <= 0 {
 		return true
 	}
@@ -105,11 +105,11 @@ func (throttle *throttleManager) waitForReady(throttledUntil time.Time) bool {
 	var notify []chan bool
 
 	// --- Throttled and waiting ---
-	t := currentClock.NewTimer(duration)
+	t := time.NewTimer(duration)
 
 	for {
 		select {
-		case <-t.C():
+		case <-t.C:
 			for _, n := range notify {
 				n <- true
 			}
@@ -133,10 +133,10 @@ func (throttle *throttleManager) waitForReady(throttledUntil time.Time) bool {
 					throttledUntil = msg.timestamp
 
 					if !t.Stop() {
-						<-t.C()
+						<-t.C
 					}
 
-					t.Reset(throttledUntil.Sub(currentClock.Now()))
+					t.Reset(throttledUntil.Sub(time.Now()))
 				}
 			}
 		}
