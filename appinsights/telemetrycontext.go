@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/microsoft/ApplicationInsights-Go/appinsights/contracts"
+	"github.com/richardpark-msft/ApplicationInsights-Go/appinsights/contracts"
 )
 
 // Encapsulates contextual data common to all telemetry submitted through a

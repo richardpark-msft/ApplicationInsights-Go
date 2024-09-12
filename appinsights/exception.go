@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/microsoft/ApplicationInsights-Go/appinsights/contracts"
+	"github.com/richardpark-msft/ApplicationInsights-Go/appinsights/contracts"
 )
 
 // Exception telemetry items represent a handled or unhandled exceptions that

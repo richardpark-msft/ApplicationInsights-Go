@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/microsoft/ApplicationInsights-Go/appinsights/contracts"
+	"github.com/richardpark-msft/ApplicationInsights-Go/appinsights/contracts"
 )
 
 var (
